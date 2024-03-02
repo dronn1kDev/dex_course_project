@@ -12,7 +12,7 @@ class SomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // home work #3
     return Container(
-      color: Colors.greenAccent[200],
+      color: Colors.greenAccent[400],
       child: Text(
         text,
         style: const TextStyle(fontSize: 32),
