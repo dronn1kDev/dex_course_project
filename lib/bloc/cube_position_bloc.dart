@@ -12,7 +12,7 @@ class CubePositionState {
 }
 
 class CubePositionBloc extends Cubit<CubePositionState> {
-  final List<MainAxisAlignment> alignmentList = [
+  final List<MainAxisAlignment> alignmentFckingList = [
     MainAxisAlignment.start,
     MainAxisAlignment.center,
     MainAxisAlignment.end,
@@ -25,9 +25,9 @@ class CubePositionBloc extends Cubit<CubePositionState> {
         ));
 
   MainAxisAlignment get currentVerticalAlignment =>
-      alignmentList[state.verticalAlignmentIndex];
+      alignmentFckingList[state.verticalAlignmentIndex];
   MainAxisAlignment get currentHorizontalAlignment =>
-      alignmentList[state.horizontalAlignmentIndex];
+      alignmentFckingList[state.horizontalAlignmentIndex];
 
   bool get isPossibleToMoveTop => state.verticalAlignmentIndex > 0;
   bool get isPossibleToMoveBottom => state.verticalAlignmentIndex < 2;
