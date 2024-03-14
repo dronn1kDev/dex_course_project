@@ -1,11 +1,37 @@
+import 'package:dex_course_temp/core/presentation/app_filled_button.dart';
+import 'package:dex_course_temp/core/presentation/app_text_field.dart';
 import 'package:flutter/material.dart';
 
-class UserFormScreen extends StatelessWidget {
+class UserFormScreen extends StatefulWidget {
+  const UserFormScreen({super.key});
+
+  @override
+  State<UserFormScreen> createState() => _UserFormScreenState();
+}
+
+class _UserFormScreenState extends State<UserFormScreen> {
   final firstNameTextCtrl = TextEditingController();
 
   final lastNameTextCtrl = TextEditingController();
 
-  UserFormScreen({super.key});
+  final isPossibleToSayHi = ValueNotifier(false);
+
+  @override
+  void initState() {
+    super.initState();
+    firstNameTextCtrl.addListener(_controllersTextListener);
+    lastNameTextCtrl.addListener(_controllersTextListener);
+  }
+
+  @override
+  void dispose() {
+    firstNameTextCtrl.removeListener(_controllersTextListener);
+    lastNameTextCtrl.removeListener(_controllersTextListener);
+    super.dispose();
+  }
+
+  void _controllersTextListener() => isPossibleToSayHi.value =
+      firstNameTextCtrl.text.isNotEmpty && lastNameTextCtrl.text.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +45,13 @@ class UserFormScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                TextField(
+                AppTextField(
+                  labelText: 'First Name',
                   controller: firstNameTextCtrl,
-                  decoration: const InputDecoration(
-                    labelText: 'First Name',
-                  ),
                 ),
-                TextField(
+                AppTextField(
+                  labelText: 'Last Name',
                   controller: lastNameTextCtrl,
-                  decoration: const InputDecoration(
-                    labelText: 'Last Name',
-                  ),
                 ),
               ]),
             ),
@@ -43,9 +65,12 @@ class UserFormScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 verticalDirection: VerticalDirection.up,
                 children: [
-                  ElevatedButton(
-                    onPressed: () => _showHelloMessage(context),
-                    child: const Text('Say Hi!'),
+                  ValueListenableBuilder(
+                    valueListenable: isPossibleToSayHi,
+                    builder: (context, value, child) => AppFilledButton(
+                      onPressed: _sayHiCallback(context),
+                      child: const Text('Say Hi!'),
+                    ),
                   ),
                 ],
               ),
@@ -81,4 +106,7 @@ class UserFormScreen extends StatelessWidget {
       ),
     );
   }
+
+  void Function()? _sayHiCallback(BuildContext context) =>
+      isPossibleToSayHi.value ? () => _showHelloMessage(context) : null;
 }

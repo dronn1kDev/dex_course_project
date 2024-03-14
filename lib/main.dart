@@ -1,4 +1,5 @@
 import 'package:dex_course_temp/routing.dart';
+import 'package:dex_course_temp/theme/theme_data.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,25 +15,7 @@ class MyApp extends StatelessWidget {
       // home work #3
       title: 'Flutter Demo',
 
-      theme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.purple,
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            padding: const EdgeInsets.all(8),
-          ),
-        ),
-        textTheme: const TextTheme(
-          headlineMedium: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
+      theme: themeData,
       routes: AppRouterConfig.routeList,
       initialRoute: AppRouteList.menu,
     );
