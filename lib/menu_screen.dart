@@ -1,3 +1,4 @@
+import 'package:dex_course_temp/core/presentation/app_filled_button.dart';
 import 'package:dex_course_temp/routing.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class MenuScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FilledButton(
+            AppFilledButton(
               onPressed: () => _goToCube(context),
               child: const Text('Cube'),
             ),
@@ -22,6 +23,12 @@ class MenuScreen extends StatelessWidget {
             FilledButton(
               onPressed: () => _goToUserForm(context),
               child: const Text('User Form'),
+            ),
+            const SizedBox(height: 8),
+            FilledButton(
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(AppRouteList.authPage),
+              child: const Text('Auth'),
             ),
           ],
         ),

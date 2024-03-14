@@ -1,4 +1,8 @@
+import 'package:dex_course_temp/bloc/cube_position_bloc.dart';
+import 'package:dex_course_temp/theme/svg_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CubeScreen extends StatefulWidget {
   const CubeScreen({super.key});
@@ -8,14 +12,7 @@ class CubeScreen extends StatefulWidget {
 }
 
 class _CubeScreenState extends State<CubeScreen> {
-  final List<MainAxisAlignment> alignmentList = [
-    MainAxisAlignment.start,
-    MainAxisAlignment.center,
-    MainAxisAlignment.end,
-  ];
-
-  int verticalAlignmentIndex = 1;
-  int horizontalAlignmentIndex = 1;
+  late final CubePositionBloc cubit = context.read<CubePositionBloc>();
 
   Widget get _squareFieldBuilder => Container(
         decoration: const BoxDecoration(
@@ -25,16 +22,18 @@ class _CubeScreenState extends State<CubeScreen> {
             ),
           ),
         ),
-        child: Column(
-          mainAxisAlignment: alignmentList[verticalAlignmentIndex],
-          children: [
-            Row(
-              mainAxisAlignment: alignmentList[horizontalAlignmentIndex],
-              children: [
-                _squareBuilder,
-              ],
-            ),
-          ],
+        child: BlocBuilder<CubePositionBloc, CubePositionState>(
+          builder: (context, state) => Column(
+            mainAxisAlignment: cubit.currentVerticalAlignment,
+            children: [
+              Row(
+                mainAxisAlignment: cubit.currentHorizontalAlignment,
+                children: [
+                  _squareBuilder,
+                ],
+              ),
+            ],
+          ),
         ),
       );
 
@@ -43,32 +42,30 @@ class _CubeScreenState extends State<CubeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FilledButton(
-            onPressed: verticalAlignmentIndex > 0
-                ? () => setState(() => verticalAlignmentIndex--)
-                : null,
+            onPressed: cubit.isPossibleToMoveTop ? cubit.moveTop : null,
             child: const Text('Вверх'),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              FilledButton(
-                onPressed: horizontalAlignmentIndex > 0
-                    ? () => setState(() => horizontalAlignmentIndex--)
-                    : null,
-                child: const Text('Влево'),
+              const FilledButton(
+                onPressed: null,
+                child: Text('Влево'),
               ),
               FilledButton(
-                onPressed: horizontalAlignmentIndex < 2
-                    ? () => setState(() => horizontalAlignmentIndex++)
-                    : null,
-                child: const Text('Вправо'),
+                onPressed: null,
+                child: Row(
+                  children: [
+                    SvgPicture.asset(SvgCollection.phoneNumber),
+                    // const Icon(Icons.call_outlined),
+                    const Text('Вправо'),
+                  ],
+                ),
               ),
             ],
           ),
           FilledButton(
-            onPressed: verticalAlignmentIndex < 2
-                ? () => setState(() => verticalAlignmentIndex++)
-                : null,
+            onPressed: cubit.isPossibleToMoveBottom ? cubit.moveBottom : null,
             child: const Text('Вниз'),
           ),
         ],
@@ -93,7 +90,10 @@ class _CubeScreenState extends State<CubeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: _squareFieldBuilder,
+            child: BlocProvider(
+              create: (context) => CubePositionBloc(),
+              child: _squareFieldBuilder,
+            ),
           ),
           Expanded(
             child: _buttonsBuilder,
