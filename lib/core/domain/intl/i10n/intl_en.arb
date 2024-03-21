@@ -1,0 +1,11 @@
+{
+  "email": "Email",
+  "password": "Password",
+  "phone": "Phone",
+  "signIn": "Sign In",
+  "login": "Login",
+  "registration": "Registration",
+  "repeatPassword": "Repeat password",
+  "imAgreedWithPrivacyAndPolicyUsage": "I''m agreed with Privacy and Policy usage",
+  "signUp": "Sign Up"
+}

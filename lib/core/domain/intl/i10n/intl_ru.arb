@@ -1,0 +1,11 @@
+{
+  "email": "Email",
+  "password": "Пароль",
+  "phone": "Телефон",
+  "signIn": "Войти",
+  "login": "Вход",
+  "registration": "Регистрация",
+  "repeatPassword": "Повторите пароль",
+  "imAgreedWithPrivacyAndPolicyUsage": "Я согласен с Правилами и Условиями использования",
+  "signUp": "Зарегистрироваться"
+}
