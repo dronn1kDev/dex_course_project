@@ -26,7 +26,17 @@ final themeData = ThemeData(
     onSurface: ColorCollection.onSurface,
     outline: ColorCollection.outline,
     onSurfaceVariant: ColorCollection.onSurfaceVariant,
+    outlineVariant: ColorCollection.outlineVariant,
   ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    dragHandleColor: ColorCollection.outline,
+    backgroundColor: ColorCollection.surfaceContainerLow,
+  ),
+  textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+    padding: EdgeInsets.zero,
+  )),
+  dividerColor: ColorCollection.outlineVariant,
   textTheme: const TextTheme(
     displayLarge: TextStyle(
         fontSize: 57,

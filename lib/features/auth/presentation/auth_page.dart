@@ -179,9 +179,10 @@ class _AuthPageState extends State<AuthPage>
     return Scaffold(
       appBar: CustomAppBar(
         context: context,
-        actions: const [
+        actions: [
           AppBarActionButton(
-            child: Icon(Icons.translate_outlined),
+            onTap: () => vm.onSettingsTap(context),
+            child: const Icon(Icons.settings_outlined),
           ),
         ],
       ),
