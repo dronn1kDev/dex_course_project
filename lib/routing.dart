@@ -1,25 +1,36 @@
-import 'package:dex_course_temp/bloc/cube_position_bloc.dart';
-import 'package:dex_course_temp/cube_screen.dart';
+import 'package:dex_course_temp/core/domain/container/app_container.dart';
 import 'package:dex_course_temp/features/auth/presentation/auth_page.dart';
-import 'package:dex_course_temp/menu_screen.dart';
-import 'package:dex_course_temp/user_form.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dex_course_temp/features/auth/presentation/auth_vm.dart';
+import 'package:dex_course_temp/features/init/presentation/init_page.dart';
+import 'package:dex_course_temp/features/init/presentation/init_vm.dart';
+import 'package:go_router/go_router.dart';
 
 abstract class AppRouteList {
-  static const menu = '/menu';
-  static const cube = '/menu/cube';
-  static const userForm = '/menu/user-form';
-  static const authPage = '/auth';
+  static const init = '/init';
+
+  static const auth = '/auth';
 }
 
 abstract class AppRouterConfig {
-  static final routeList = {
-    AppRouteList.menu: (context) => const MenuScreen(),
-    AppRouteList.cube: (context) => BlocProvider(
-          create: (context) => CubePositionBloc(),
-          child: const CubeScreen(),
+  static final instance = GoRouter(
+    initialLocation: AppRouteList.init,
+    routes: [
+      GoRoute(
+        path: AppRouteList.init,
+        builder: (context, state) => const InitPage(
+          vm: InitViewModel(),
         ),
-    AppRouteList.userForm: (context) => const UserFormScreen(),
-    AppRouteList.authPage: (context) => const AuthPage(),
-  };
+      ),
+      GoRoute(
+        path: AppRouteList.auth,
+        builder: (context, state) {
+          return AuthPage(
+            vm: AuthViewModel(
+              authRepository: AppContainer().repositoryScope.authRepository,
+            ),
+          );
+        },
+      ),
+    ],
+  );
 }
