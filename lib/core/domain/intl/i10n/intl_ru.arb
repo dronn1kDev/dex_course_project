@@ -7,5 +7,8 @@
   "registration": "Регистрация",
   "repeatPassword": "Повторите пароль",
   "imAgreedWithPrivacyAndPolicyUsage": "Я согласен с Правилами и Условиями использования",
-  "signUp": "Зарегистрироваться"
+  "signUp": "Зарегистрироваться",
+  "settings": "Настройки",
+  "done": "Готово",
+  "darkTheme": "Темная тема"
 }

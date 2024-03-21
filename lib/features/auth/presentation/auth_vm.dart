@@ -5,15 +5,20 @@ import 'package:dex_course_temp/core/presentation/app_text_field/app_text_editin
 import 'package:dex_course_temp/core/presentation/password_text_editing_controller.dart';
 import 'package:dex_course_temp/features/auth/domain/entity/auth_credentials.dart';
 import 'package:dex_course_temp/features/auth/domain/repository/auth_repository.dart';
+import 'package:dex_course_temp/features/settings/domain/service/settings_service.dart';
+import 'package:dex_course_temp/features/settings/presentation/settings_modal_bs.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
 class AuthViewModel {
   final AuthRepository _authRepository;
+  final SettingsService _settingsService;
 
   AuthViewModel({
     required AuthRepository authRepository,
-  }) : _authRepository = authRepository;
+    required SettingsService settingService,
+  })  : _authRepository = authRepository,
+        _settingsService = settingService;
 
   late TabController tabController;
 
@@ -125,5 +130,14 @@ class AuthViewModel {
         }
         break;
     }
+  }
+
+  void onSettingsTap(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) =>
+          SettingsModalBottomSheet(settingsService: _settingsService),
+      showDragHandle: true,
+    );
   }
 }

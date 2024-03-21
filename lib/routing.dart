@@ -27,6 +27,7 @@ abstract class AppRouterConfig {
           return AuthPage(
             vm: AuthViewModel(
               authRepository: AppContainer().repositoryScope.authRepository,
+              settingService: AppContainer().serviceScope.settingsService,
             ),
           );
         },
