@@ -81,6 +81,15 @@ class _AuthPageState extends State<AuthPage>
         child: Column(
           children: [
             const SizedBox(height: 100),
+            Row(
+              children: [
+                AppBarActionButton(
+                  onTap: vm.googleSignIn,
+                  child: const Icon(Icons.logo_dev),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             AppTextField(
               controller: vm.phoneLoginTextCtrl,
               labelText: S.of(context).phone,
@@ -97,7 +106,7 @@ class _AuthPageState extends State<AuthPage>
             Obs(
               rvList: [vm.isLoginPossible],
               builder: (context) => AppFilledButton(
-                onPressed: vm.isLoginPossible() ? () {} : null,
+                onPressed: vm.isLoginPossible() ? vm.defaultSignIn : null,
                 child: Text(S.of(context).signIn),
               ),
             ),
@@ -166,7 +175,7 @@ class _AuthPageState extends State<AuthPage>
             const SizedBox(height: 20),
             vm.isRegisterPossible.observer(
               (context, value) => AppFilledButton(
-                onPressed: value ? vm.signUp : null,
+                onPressed: value ? () {} : null,
                 child: Text(S.of(context).signUp),
               ),
             ),

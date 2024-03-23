@@ -5,6 +5,7 @@ import 'package:dex_course_temp/core/presentation/app_text_field/app_text_editin
 import 'package:dex_course_temp/core/presentation/password_text_editing_controller.dart';
 import 'package:dex_course_temp/features/auth/domain/entity/auth_credentials.dart';
 import 'package:dex_course_temp/features/auth/domain/repository/auth_repository.dart';
+import 'package:dex_course_temp/features/auth/domain/strategy/auth_strategy.dart';
 import 'package:dex_course_temp/features/settings/domain/service/settings_service.dart';
 import 'package:dex_course_temp/features/settings/presentation/settings_modal_bs.dart';
 import 'package:flutter/material.dart';
@@ -114,11 +115,8 @@ class AuthViewModel {
   void onCheckBoxChecked(bool? value) =>
       isUserAgreedWithPnPUsage(value ?? false);
 
-  Future<void> signUp() async {
-    final result = await _authRepository.signIn(
-      phone: phoneRegisterTextCtrl.text,
-      password: passwordRegisterTextCtrl.text,
-    );
+  Future<void> _signIn(SignInStrategy signInStrategy) async {
+    final result = await signInStrategy();
 
     switch (result) {
       case GoodUseCaseResult<AuthCredentials>(:final data):
@@ -132,6 +130,16 @@ class AuthViewModel {
     }
   }
 
+  Future<void> defaultSignIn() async {
+    final strategy = DefaultSignInStrategy(
+      authRepository: _authRepository,
+      phone: phoneLoginTextCtrl.text,
+      password: passwordLoginTextCtrl.text,
+    );
+
+    return await _signIn(strategy);
+  }
+
   void onSettingsTap(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -139,5 +147,11 @@ class AuthViewModel {
           SettingsModalBottomSheet(settingsService: _settingsService),
       showDragHandle: true,
     );
+  }
+
+  Future<void> googleSignIn() async {
+    final strategy = GoogleServiceSignInStrategy();
+
+    return await _signIn(strategy);
   }
 }
