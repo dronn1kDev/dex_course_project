@@ -8,7 +8,9 @@ import 'package:dex_course_temp/features/auth/domain/repository/auth_repository.
 import 'package:dex_course_temp/features/auth/domain/strategy/auth_strategy.dart';
 import 'package:dex_course_temp/features/settings/domain/service/settings_service.dart';
 import 'package:dex_course_temp/features/settings/presentation/settings_modal_bs.dart';
+import 'package:dex_course_temp/routing.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
 class AuthViewModel {
@@ -141,6 +143,7 @@ class AuthViewModel {
   }
 
   void onSettingsTap(BuildContext context) {
+    context.go(AppRouteList.auth);
     showModalBottomSheet(
       context: context,
       builder: (context) =>
@@ -153,5 +156,9 @@ class AuthViewModel {
     final strategy = GoogleServiceSignInStrategy();
 
     return await _signIn(strategy);
+  }
+
+  void goToAdvListPage(BuildContext context) {
+    context.go(AppRouteList.advListPage);
   }
 }

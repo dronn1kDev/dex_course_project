@@ -106,7 +106,9 @@ class _AuthPageState extends State<AuthPage>
             Obs(
               rvList: [vm.isLoginPossible],
               builder: (context) => AppFilledButton(
-                onPressed: vm.isLoginPossible() ? vm.defaultSignIn : null,
+                onPressed: vm.isLoginPossible()
+                    ? () => vm.goToAdvListPage(context)
+                    : null,
                 child: Text(S.of(context).signIn),
               ),
             ),

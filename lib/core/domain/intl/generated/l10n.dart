@@ -169,6 +169,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Tiraspol`
+  String get tiraspol {
+    return Intl.message(
+      'Tiraspol',
+      name: 'tiraspol',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rybnitsa`
+  String get rybnitsa {
+    return Intl.message(
+      'Rybnitsa',
+      name: 'rybnitsa',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

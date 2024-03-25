@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:dex_course_temp/features/advertisement/data/repository/adv_mocked_repository.dart';
+import 'package:dex_course_temp/features/advertisement/domain/repository/advertisement_repository.dart';
 import 'package:dex_course_temp/features/auth/data/source/auth_mocked_data_source.dart';
 import 'package:dex_course_temp/features/auth/domain/repository/auth_repository.dart';
 import 'package:dex_course_temp/features/settings/domain/service/settings_service.dart';
@@ -22,8 +24,13 @@ class AppContainer {
   Future<bool> initDependencies() async {
     try {
       final authRepo = AuthRepository(AuthMockedDataSource());
+      final AdvertisementRepository advertisementRepository =
+          AdvMockedRepository();
 
-      repositoryScope = RepositoryScope(authRepository: authRepo);
+      repositoryScope = RepositoryScope(
+        authRepository: authRepo,
+        advertisementRepository: advertisementRepository,
+      );
 
       final settingsService =
           SettingsService(const SettingsState(localeIndex: 0));
@@ -47,8 +54,10 @@ class ServiceScope {
 
 class RepositoryScope {
   final AuthRepository authRepository;
+  final AdvertisementRepository advertisementRepository;
 
   RepositoryScope({
     required this.authRepository,
+    required this.advertisementRepository,
   });
 }
