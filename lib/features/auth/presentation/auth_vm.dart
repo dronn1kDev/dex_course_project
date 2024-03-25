@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dex_course_temp/core/domain/app_error/app_error.dart';
 import 'package:dex_course_temp/core/domain/use_case_result/use_case_result.dart';
 import 'package:dex_course_temp/core/presentation/app_text_field/app_text_editing_controller.dart';
 import 'package:dex_course_temp/core/presentation/password_text_editing_controller.dart';
@@ -27,6 +28,10 @@ class AuthViewModel {
 
   final phoneLoginTextCtrl = AppTextEditingController();
   final passwordLoginTextCtrl = PassTextEditingController();
+  late final _loginCtrlMap = {
+    'phone': phoneLoginTextCtrl,
+    'password': passwordLoginTextCtrl,
+  };
   final phoneRegisterTextCtrl = AppTextEditingController();
   final passwordRegisterTextCtrl = PassTextEditingController();
   final repeatPasswordRegisterTextCtrl = PassTextEditingController();
@@ -118,6 +123,9 @@ class AuthViewModel {
       isUserAgreedWithPnPUsage(value ?? false);
 
   Future<void> _signIn(SignInStrategy signInStrategy) async {
+    for (final ctrl in _loginCtrlMap.values) {
+      ctrl.errorText.value = null;
+    }
     final result = await signInStrategy();
 
     switch (result) {
@@ -125,8 +133,11 @@ class AuthViewModel {
         log(data.jvtToken);
         break;
       case BadUseCaseResult<AuthCredentials>(:final errorList):
-        for (final error in errorList) {
-          log(error.code);
+        final validationErrorList =
+            errorList.whereType<ValidationError>().toList();
+        for (final error in validationErrorList) {
+          final controller = _loginCtrlMap[error.fieldName];
+          controller?.errorText(error.code);
         }
         break;
     }
@@ -143,7 +154,6 @@ class AuthViewModel {
   }
 
   void onSettingsTap(BuildContext context) {
-    context.go(AppRouteList.auth);
     showModalBottomSheet(
       context: context,
       builder: (context) =>

@@ -24,6 +24,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage>
     with SingleTickerProviderStateMixin {
   AuthViewModel get vm => widget.vm;
+
   String get imAgreedWith => S
       .of(context)
       .imAgreedWithPrivacyAndPolicyUsage
@@ -31,7 +32,7 @@ class _AuthPageState extends State<AuthPage>
       .getRange(0, 3)
       .join(' ');
 
-  String get PnPUsage {
+  String get pNPUsage {
     final wordList = S.of(context).imAgreedWithPrivacyAndPolicyUsage.split(' ');
     return wordList.getRange(3, wordList.length).join(' ');
   }
@@ -106,9 +107,8 @@ class _AuthPageState extends State<AuthPage>
             Obs(
               rvList: [vm.isLoginPossible],
               builder: (context) => AppFilledButton(
-                onPressed: vm.isLoginPossible()
-                    ? () => vm.goToAdvListPage(context)
-                    : null,
+                onPressed:
+                    vm.isLoginPossible() ? () => vm.defaultSignIn() : null,
                 child: Text(S.of(context).signIn),
               ),
             ),
@@ -161,7 +161,7 @@ class _AuthPageState extends State<AuthPage>
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           TextSpan(
-                            text: PnPUsage,
+                            text: pNPUsage,
                             style:
                                 Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       color: ColorCollection.primary,

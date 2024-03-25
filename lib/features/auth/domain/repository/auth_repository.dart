@@ -1,10 +1,7 @@
-import 'package:dex_course_temp/core/data/remote_response.dart';
 import 'package:dex_course_temp/core/domain/app_error/app_error.dart';
 import 'package:dex_course_temp/core/domain/use_case_result/use_case_result.dart';
-import 'package:dex_course_temp/features/auth/data/model/auth_credentials.dart';
 import 'package:dex_course_temp/features/auth/data/source/auth_data.dart';
 import 'package:dex_course_temp/features/auth/domain/entity/auth_credentials.dart';
-import 'package:dex_course_temp/util/rest_api_error_list_ext.dart';
 
 class AuthRepository {
   final AuthDataSource _authDataSource;
@@ -15,18 +12,36 @@ class AuthRepository {
     required final String phone,
     required final String password,
   }) async {
-    final sourceResult =
-        await _authDataSource.signIn(phone: phone, password: password);
+    await Future.delayed(const Duration(seconds: 2));
 
-    switch (sourceResult) {
-      case DataRemoteResponse<AuthCredentialsModel>(:final data):
-        return UseCaseResult.good(AuthCredentials.fromModel(data));
-      case VoidRemoteResponse<AuthCredentialsModel>():
-        return const UseCaseResult.bad(
-            [SelfValidationError('unexpected void')]);
-      case ErrorRemoteResponse<AuthCredentialsModel>(:final errorList):
-        return UseCaseResult.bad(errorList.asAppErrors.toList());
+    final List<AppError> errorList = [];
+
+    if (phone.length < 4) {
+      errorList.add(const ValidationError('short', 'phone'));
     }
+
+    if (password.length < 8) {
+      errorList.add(const ValidationError('short', 'password'));
+    }
+
+    if (errorList.isEmpty) {
+      return const UseCaseResult.good(AuthCredentials('naslkdjfhasljdfh'));
+    }
+
+    return UseCaseResult.bad(errorList);
+
+    // final sourceResult =
+    //     await _authDataSource.signIn(phone: phone, password: password);
+
+    // switch (sourceResult) {
+    //   case DataRemoteResponse<AuthCredentialsModel>(:final data):
+    //     return UseCaseResult.good(AuthCredentials.fromModel(data));
+    //   case VoidRemoteResponse<AuthCredentialsModel>():
+    //     return const UseCaseResult.bad(
+    //         [SelfValidationError('unexpected void')]);
+    //   case ErrorRemoteResponse<AuthCredentialsModel>(:final errorList):
+    //     return UseCaseResult.bad(errorList.asAppErrors.toList());
+    // }
 
     // return switch (sourceResult) {
     //   DataRemoteResponse<AuthCredentialsModel>(:final data) =>
