@@ -2,10 +2,10 @@ import 'package:dex_course_temp/features/advertisement/domain/entity/advertiseme
 import 'package:dex_course_temp/theme/color_collection.dart';
 import 'package:flutter/material.dart';
 
-class AdvListItemWidget extends StatelessWidget {
+class AdvListItemCard extends StatelessWidget {
   final AdvertisementListItem advertisementListItem;
 
-  const AdvListItemWidget({super.key, required this.advertisementListItem});
+  const AdvListItemCard({super.key, required this.advertisementListItem});
 
   BoxDecoration _cardDecoration(BuildContext context) => BoxDecoration(
         color: ColorCollection.surface,

@@ -1,35 +1,41 @@
-import 'package:dex_course_temp/core/domain/use_case_result/use_case_result.dart';
 import 'package:dex_course_temp/features/advertisement/domain/entity/adv_list_filter.dart';
-import 'package:dex_course_temp/features/advertisement/domain/entity/advertisement_list_item.dart';
 import 'package:dex_course_temp/features/advertisement/domain/repository/advertisement_repository.dart';
-import 'package:reactive_variables/reactive_variables.dart';
+import 'package:dex_course_temp/features/advertisement/presentation/widget/adv_list_builder/adv_list_bloc.dart';
+import 'package:dex_course_temp/features/advertisement/presentation/widget/adv_list_builder/adv_list_state.dart';
 
 class AdvListViewModel {
   final AdvertisementRepository _advertisementRepository;
 
-  final advList = <AdvertisementListItem>[].rv;
+  final listController = AdvListController(LoadingAdvListState());
+
+  final _pageLimit = 10;
+  int _currentPage = 0;
 
   AdvListViewModel({
     required AdvertisementRepository advertisementRepository,
   }) : _advertisementRepository = advertisementRepository;
 
-  Future<void> getAdvPage(final int page) async {
-    final result = await _advertisementRepository.getList(
-      AdvListFilter(
-        availableLocalityList: [],
-        page: page,
-        limit: 10,
+  Future<void> getAdvNextPage() async {
+    listController.append(() => _advertisementRepository.getList(
+          AdvListFilter(
+            availableLocalityList: [],
+            page: _currentPage,
+            limit: _pageLimit,
+          ),
+        ));
+    _currentPage++;
+  }
+
+  Future<void> refreshCurrentItems() async {
+    final specificLimit = (_currentPage + 1) * _pageLimit;
+    listController.replace(
+      () => _advertisementRepository.getList(
+        AdvListFilter(
+          availableLocalityList: [],
+          page: 0,
+          limit: specificLimit,
+        ),
       ),
     );
-
-    switch (result) {
-      case GoodUseCaseResult<List<AdvertisementListItem>>(:final data):
-        advList.addAll(data);
-        break;
-      case BadUseCaseResult<List<AdvertisementListItem>>():
-        // TODO отобразить ошибку
-        advList.clear();
-        break;
-    }
   }
 }
