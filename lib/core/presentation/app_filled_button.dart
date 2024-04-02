@@ -42,7 +42,8 @@ class _AppFilledButtonState extends State<AppFilledButton> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _buttonHeight = _buttonGlobalKey.currentContext?.size?.height;
+      setState(
+          () => _buttonHeight = _buttonGlobalKey.currentContext?.size?.height);
     });
   }
 

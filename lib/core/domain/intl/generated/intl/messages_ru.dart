@@ -34,8 +34,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "registration": MessageLookupByLibrary.simpleMessage("Регистрация"),
         "repeatPassword":
             MessageLookupByLibrary.simpleMessage("Повторите пароль"),
+        "rybnitsa": MessageLookupByLibrary.simpleMessage("Rybnitsa"),
         "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
         "signIn": MessageLookupByLibrary.simpleMessage("Войти"),
-        "signUp": MessageLookupByLibrary.simpleMessage("Зарегистрироваться")
+        "signUp": MessageLookupByLibrary.simpleMessage("Зарегистрироваться"),
+        "tiraspol": MessageLookupByLibrary.simpleMessage("Tiraspol")
       };
 }

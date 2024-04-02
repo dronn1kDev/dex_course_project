@@ -3,20 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends AppBar {
-  @override
-  final Widget? title;
-  @override
-  final List<Widget> actions;
-
-  @override
-  final Widget? leading;
-
   CustomAppBar({
     super.key,
     required BuildContext context,
-    this.title,
-    this.actions = const [],
-    this.leading,
+    final Widget? title,
+    final List<Widget>? actions,
+    final Widget? leading,
   }) : super(
           title: title,
           leadingWidth: leading != null
@@ -30,6 +22,7 @@ class CustomAppBar extends AppBar {
                       onPressed: context.pop,
                       icon: const Icon(Icons.arrow_back_outlined))
                   : const SizedBox.shrink()),
+          automaticallyImplyLeading: false,
           titleTextStyle: Theme.of(context).textTheme.titleLarge,
           actions: actions,
           iconTheme: const IconThemeData(
