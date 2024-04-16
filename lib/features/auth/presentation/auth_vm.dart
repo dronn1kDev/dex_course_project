@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:dex_course_temp/core/domain/intl/generated/l10n.dart';
 import 'package:dex_course_temp/core/domain/use_case_result/use_case_result.dart';
 import 'package:dex_course_temp/core/presentation/app_text_field/app_text_editing_controller.dart';
 import 'package:dex_course_temp/core/presentation/password_text_editing_controller.dart';
+import 'package:dex_course_temp/core/presentation/view/view_model.dart';
 import 'package:dex_course_temp/features/auth/domain/entity/auth_credentials.dart';
 import 'package:dex_course_temp/features/auth/domain/repository/auth_repository.dart';
 import 'package:dex_course_temp/features/auth/domain/strategy/auth_strategy.dart';
@@ -11,9 +13,10 @@ import 'package:dex_course_temp/features/settings/presentation/settings_modal_bs
 import 'package:dex_course_temp/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
-class AuthViewModel {
+class AuthViewModel extends ViewModel with SingleTickerProviderViewStateMixin {
   final AuthRepository _authRepository;
   final SettingsService _settingsService;
 
@@ -23,7 +26,7 @@ class AuthViewModel {
   })  : _authRepository = authRepository,
         _settingsService = settingService;
 
-  late TabController tabController;
+  late TabController tabController = TabController(length: 2, vsync: this);
 
   final phoneLoginTextCtrl = AppTextEditingController();
   final passwordLoginTextCtrl = PassTextEditingController();
@@ -37,15 +40,33 @@ class AuthViewModel {
 
   final isRegisterPossible = false.rv;
 
-  void init({
-    required final TabController tabController,
-  }) {
-    this.tabController = tabController;
+  String get imAgreedWith => S
+      .of(context)
+      .imAgreedWithPrivacyAndPolicyUsage
+      .split(' ')
+      .getRange(0, 3)
+      .join(' ');
+
+  String get pNPUsage {
+    final wordList = S.of(context).imAgreedWithPrivacyAndPolicyUsage.split(' ');
+    return wordList.getRange(3, wordList.length).join(' ');
+  }
+
+  @override
+  void initState(BuildContext context) {
+    super.initState(context);
     initListeners();
   }
 
+  @override
   void dispose() {
     disposeListeners();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   void _loginPossibilityListener() {
@@ -143,16 +164,16 @@ class AuthViewModel {
   }
 
   void onSettingsTap(BuildContext context) {
-    context.go(AppRouteList.auth);
-    showModalBottomSheet(
+    showMaterialModalBottomSheet(
       context: context,
       builder: (context) =>
           SettingsModalBottomSheet(settingsService: _settingsService),
-      showDragHandle: true,
     );
   }
 
   Future<void> googleSignIn() async {
+    // context.push(AppRouteList.auth);
+    // return;
     final strategy = GoogleServiceSignInStrategy();
 
     return await _signIn(strategy);

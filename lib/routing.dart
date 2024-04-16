@@ -30,7 +30,7 @@ abstract class AppRouterConfig {
         path: AppRouteList.auth,
         builder: (context, state) {
           return AuthPage(
-            vm: AuthViewModel(
+            vmFactory: (_) => AuthViewModel(
               authRepository: AppContainer().repositoryScope.authRepository,
               settingService: AppContainer().serviceScope.settingsService,
             ),

@@ -47,17 +47,21 @@ class AppContainer {
 class ServiceScope {
   final SettingsService settingsService;
 
-  ServiceScope({
+  const ServiceScope({
     required this.settingsService,
   });
+
+  factory ServiceScope.fromContainer() => AppContainer().serviceScope;
 }
 
 class RepositoryScope {
   final AuthRepository authRepository;
   final AdvertisementRepository advertisementRepository;
 
-  RepositoryScope({
+  const RepositoryScope({
     required this.authRepository,
     required this.advertisementRepository,
   });
+
+  factory RepositoryScope.fromContainer() => AppContainer().repositoryScope;
 }

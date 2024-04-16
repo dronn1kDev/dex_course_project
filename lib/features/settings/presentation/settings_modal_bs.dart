@@ -58,21 +58,25 @@ class SettingsModalBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      // decoration: _modalDecoration,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _modalHeaderBuilder(context),
-          const SizedBox(height: 16),
-          _languageDropDownBuilder,
-          const SizedBox(height: 24),
-          const Divider(),
-          const SizedBox(height: 24),
-          _themeSwitcherBuilder(context),
-          SizedBox(height: MediaQuery.of(context).padding.bottom),
-        ],
+    return SafeArea(
+      bottom: false,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16)
+            .copyWith(bottom: MediaQuery.of(context).padding.bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _modalHeaderBuilder(context),
+            const SizedBox(height: 16),
+            _languageDropDownBuilder,
+            const SizedBox(height: 24),
+            const Divider(),
+            const SizedBox(height: 24),
+            _themeSwitcherBuilder(context),
+            const SizedBox(height: 24),
+            const TextField(),
+          ],
+        ),
       ),
     );
   }

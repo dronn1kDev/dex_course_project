@@ -6,5 +6,5 @@ class InitViewModel {
   const InitViewModel();
 
   Future<void> goToAuth(BuildContext context) => Future.delayed(
-      const Duration(seconds: 2), () => context.push(AppRouteList.auth));
+      const Duration(seconds: 2), () => context.go(AppRouteList.auth));
 }
